@@ -30,10 +30,11 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] StudentDto student)
+    public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
     {
-        await _studentService.CreateAsync(student);
-        return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
+        var id = await _studentService.CreateAsync(request);
+        var student = await _studentService.GetByIdAsync(id);
+        return CreatedAtAction(nameof(GetById), new { id }, student);
     }
 
     [HttpPut("{id:guid}")]

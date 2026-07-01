@@ -24,6 +24,9 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .HasMaxLength(100)
             .IsRequired();
 
+        builder.Property(s => s.DateOfBirth)
+            .IsRequired();
+
         builder.Property(s => s.Phone)
             .HasMaxLength(20);
 

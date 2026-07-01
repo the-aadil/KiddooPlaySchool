@@ -21,6 +21,8 @@ public class ExceptionFilter : IExceptionFilter
         {
             KeyNotFoundException => ((int)HttpStatusCode.NotFound, context.Exception.Message),
             UnauthorizedAccessException => ((int)HttpStatusCode.Forbidden, "Access denied"),
+            InvalidOperationException => ((int)HttpStatusCode.Conflict, context.Exception.Message),
+            ArgumentException => ((int)HttpStatusCode.BadRequest, context.Exception.Message),
             _ => ((int)HttpStatusCode.InternalServerError, "An internal server error occurred")
         };
 
