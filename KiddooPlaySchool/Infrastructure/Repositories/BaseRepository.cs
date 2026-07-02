@@ -40,18 +40,11 @@ public class BaseRepository<T> : IRepository<T> where T : BaseEntity
         return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(T entity)
+    public Task DeleteAsync(T entity)
     {
-        if (entity is BaseEntity baseEntity)
-        {
-            baseEntity.IsDeleted = true;
-            baseEntity.UpdatedAt = DateTime.UtcNow;
-            _dbSet.Update(entity);
-        }
-        else
-        {
-            _dbSet.Remove(entity);
-        }
-        await Task.CompletedTask;
+        entity.IsDeleted = true;
+        entity.UpdatedAt = DateTime.UtcNow;
+        _dbSet.Update(entity);
+        return Task.CompletedTask;
     }
 }

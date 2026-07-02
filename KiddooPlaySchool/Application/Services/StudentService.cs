@@ -31,27 +31,40 @@ public class StudentService : IStudentService
         return student is null ? null : _mapper.Map<StudentDto>(student);
     }
 
-    public async Task CreateAsync(StudentDto student)
+    public async Task<Guid> CreateAsync(CreateStudentRequest request)
     {
-        var entity = _mapper.Map<Student>(student);
+        var entity = new Student
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            Phone = request.Phone,
+            DateOfBirth = request.DateOfBirth,
+            Address = request.Address,
+            ParentName = request.ParentName,
+            ParentPhone = request.ParentPhone,
+            ParentEmail = request.ParentEmail
+        };
+
         await _repository.AddAsync(entity);
         await _unitOfWork.SaveChangesAsync();
+        return entity.Id;
     }
 
     public async Task UpdateAsync(StudentDto student)
     {
-        var entity = await _repository.GetByIdAsync(student.Id);
-        if (entity is null) throw new KeyNotFoundException($"Student with Id {student.Id} not found.");
+        var entity = await _repository.GetByIdAsync(student.Id)
+            ?? throw new KeyNotFoundException($"Student with Id {student.Id} not found.");
 
-        _mapper.Map(student, entity);
+        entity.Email = student.Email;
         await _repository.UpdateAsync(entity);
         await _unitOfWork.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        var entity = await _repository.GetByIdAsync(id);
-        if (entity is null) throw new KeyNotFoundException($"Student with Id {id} not found.");
+        var entity = await _repository.GetByIdAsync(id)
+            ?? throw new KeyNotFoundException($"Student with Id {id} not found.");
 
         await _repository.DeleteAsync(entity);
         await _unitOfWork.SaveChangesAsync();
