@@ -1,5 +1,7 @@
 using AutoMapper;
-using KiddooPlaySchool.Application.DTOs;
+using KiddooPlaySchool.Application.DTOs.ClassRoom;
+using KiddooPlaySchool.Application.DTOs.Student;
+using KiddooPlaySchool.Application.DTOs.Teacher;
 using KiddooPlaySchool.Domain.Entities;
 
 namespace KiddooPlaySchool.Application.Mapping;
@@ -8,19 +10,29 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Student, StudentDto>()
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+        CreateMap<TeacherProfile, TeacherResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.MobileNumber, opt => opt.MapFrom(src => src.User.MobileNumber))
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.User.IsActive))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt));
 
-        CreateMap<RegisterTeacherRequest, Teacher>()
-            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
-            .ForMember(dest => dest.EmployeeId, opt => opt.Ignore())
-            .ForMember(dest => dest.JoinDate, opt => opt.Ignore())
-            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+        CreateMap<StudentProfile, StudentResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.MobileNumber))
+            .ForMember(dest => dest.EnrollmentDate, opt => opt.MapFrom(src => src.EnrollmentDate))
+            .ForMember(dest => dest.ClassRoomName, opt => opt.MapFrom(src => src.ClassRoom != null ? src.ClassRoom.Name : null))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt));
 
-        CreateMap<Teacher, TeacherResponse>();
+        CreateMap<ClassRoom, ClassRoomResponse>()
+            .ForMember(dest => dest.StudentCount, opt => opt.MapFrom(src => src.Students.Count(s => !s.IsDeleted)));
     }
 }

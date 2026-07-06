@@ -1,13 +1,11 @@
-namespace KiddooPlaySchool.Domain.Entities;
+namespace KiddooPlaySchool.Application.DTOs.Teacher;
 
-public class Teacher : BaseEntity
+public class UpdateTeacherRequest
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string Username { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string PasswordHash { get; set; } = string.Empty;
     public string MobileNumber { get; set; } = string.Empty;
+    public string? Password { get; set; }
     public string? AlternateMobile { get; set; }
     public DateTime DateOfBirth { get; set; }
     public string Gender { get; set; } = string.Empty;
@@ -16,7 +14,4 @@ public class Teacher : BaseEntity
     public string? Address { get; set; }
     public string? City { get; set; }
     public string? State { get; set; }
-    public DateTime JoinDate { get; set; }
-    public string EmployeeId { get; set; } = string.Empty;
-    public bool IsActive { get; set; } = true;
 }

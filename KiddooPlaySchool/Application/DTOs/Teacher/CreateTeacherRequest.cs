@@ -1,13 +1,13 @@
-namespace KiddooPlaySchool.Application.DTOs;
+namespace KiddooPlaySchool.Application.DTOs.Teacher;
 
-public class RegisterTeacherRequest
+public class CreateTeacherRequest
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public string ConfirmPassword { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public string MobileNumber { get; set; } = string.Empty;
     public string? AlternateMobile { get; set; }
     public DateTime DateOfBirth { get; set; }
@@ -17,4 +17,5 @@ public class RegisterTeacherRequest
     public string? Address { get; set; }
     public string? City { get; set; }
     public string? State { get; set; }
+    public DateTime JoinDate { get; set; }
 }

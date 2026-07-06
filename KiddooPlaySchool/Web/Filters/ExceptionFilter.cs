@@ -1,4 +1,5 @@
 using System.Net;
+using KiddooPlaySchool.Application.DTOs.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -20,21 +21,17 @@ public class ExceptionFilter : IExceptionFilter
         var (statusCode, message) = context.Exception switch
         {
             KeyNotFoundException => ((int)HttpStatusCode.NotFound, context.Exception.Message),
-            UnauthorizedAccessException => ((int)HttpStatusCode.Forbidden, "Access denied"),
+            UnauthorizedAccessException => ((int)HttpStatusCode.Forbidden, context.Exception.Message),
             InvalidOperationException => ((int)HttpStatusCode.Conflict, context.Exception.Message),
             ArgumentException => ((int)HttpStatusCode.BadRequest, context.Exception.Message),
-            _ => ((int)HttpStatusCode.InternalServerError, "An internal server error occurred")
+            _ => ((int)HttpStatusCode.InternalServerError, "An internal server error occurred.")
         };
 
-        var response = new ObjectResult(new
-        {
-            error = message,
-            statusCode
-        })
+        var response = ApiResponse.Fail(message);
+
+        context.Result = new ObjectResult(response)
         {
             StatusCode = statusCode
         };
-
-        context.Result = response;
     }
 }

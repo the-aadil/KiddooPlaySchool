@@ -1,15 +1,16 @@
-namespace KiddooPlaySchool.Domain.Entities;
+namespace KiddooPlaySchool.Application.DTOs.Student;
 
-public class Student : BaseEntity
+public class UpdateStudentRequest
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
+    public string? Password { get; set; }
     public DateTime DateOfBirth { get; set; }
     public string? Address { get; set; }
     public string? ParentName { get; set; }
     public string? ParentPhone { get; set; }
     public string? ParentEmail { get; set; }
-    public DateTime EnrollmentDate { get; set; }
+    public Guid? ClassRoomId { get; set; }
 }

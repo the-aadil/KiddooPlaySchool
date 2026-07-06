@@ -1,0 +1,16 @@
+namespace KiddooPlaySchool.Domain.Entities;
+
+public class StudentProfile : BaseEntity
+{
+    public Guid UserId { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public string? Address { get; set; }
+    public string? ParentName { get; set; }
+    public string? ParentPhone { get; set; }
+    public string? ParentEmail { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public Guid? ClassRoomId { get; set; }
+
+    public ApplicationUser User { get; set; } = null!;
+    public ClassRoom? ClassRoom { get; set; }
+}

@@ -18,17 +18,29 @@ public class BaseRepository<T> : IRepository<T> where T : BaseEntity
 
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await _dbSet.FindAsync(id);
+        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public IQueryable<T> GetAll()
     {
-        return await _dbSet.ToListAsync();
+        return _dbSet.AsQueryable();
+    }
+
+    public async Task<(IEnumerable<T> Items, int TotalCount)> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _dbSet.AsQueryable();
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task AddAsync(T entity)
     {
-        entity.Id = Guid.NewGuid();
+        entity.Id = Guid.CreateVersion7();
         entity.CreatedAt = DateTime.UtcNow;
         await _dbSet.AddAsync(entity);
     }
@@ -36,7 +48,13 @@ public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     public Task UpdateAsync(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
-        _dbSet.Update(entity);
+
+        if (_context.Entry(entity).State == EntityState.Detached)
+        {
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
         return Task.CompletedTask;
     }
 
@@ -44,7 +62,13 @@ public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         entity.IsDeleted = true;
         entity.UpdatedAt = DateTime.UtcNow;
-        _dbSet.Update(entity);
+
+        if (_context.Entry(entity).State == EntityState.Detached)
+        {
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
         return Task.CompletedTask;
     }
 }
