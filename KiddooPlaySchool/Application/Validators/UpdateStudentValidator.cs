@@ -3,9 +3,9 @@ using KiddooPlaySchool.Application.DTOs.Student;
 
 namespace KiddooPlaySchool.Application.Validators;
 
-public class CreateStudentValidator : AbstractValidator<CreateStudentRequest>
+public class UpdateStudentValidator : AbstractValidator<UpdateStudentRequest>
 {
-    public CreateStudentValidator()
+    public UpdateStudentValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First name is required.")
@@ -25,12 +25,8 @@ public class CreateStudentValidator : AbstractValidator<CreateStudentRequest>
             .MaximumLength(20);
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password is required.")
-            .MinimumLength(6).WithMessage("Password must be at least 6 characters.");
-
-        RuleFor(x => x.ConfirmPassword)
-            .NotEmpty().WithMessage("Confirm password is required.")
-            .Equal(x => x.Password).WithMessage("Passwords do not match.");
+            .MinimumLength(6).When(x => !string.IsNullOrWhiteSpace(x.Password))
+            .WithMessage("Password must be at least 6 characters.");
 
         RuleFor(x => x.DateOfBirth)
             .LessThan(DateTime.UtcNow).WithMessage("Date of birth must be in the past.");

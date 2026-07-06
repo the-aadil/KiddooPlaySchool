@@ -1,4 +1,4 @@
-namespace KiddooPlaySchool.Application.DTOs;
+namespace KiddooPlaySchool.Application.DTOs.Student;
 
 public class CreateStudentRequest
 {
@@ -6,9 +6,12 @@ public class CreateStudentRequest
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string ConfirmPassword { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public string? Address { get; set; }
     public string? ParentName { get; set; }
     public string? ParentPhone { get; set; }
     public string? ParentEmail { get; set; }
+    public Guid? ClassRoomId { get; set; }
 }
