@@ -12,6 +12,10 @@ public class TeacherClassRoomConfiguration : IEntityTypeConfiguration<TeacherCla
 
         builder.HasKey(tc => new { tc.TeacherProfileId, tc.ClassRoomId });
 
+        builder.Property(tc => tc.AssignmentDate)
+            .IsRequired()
+            .HasDefaultValueSql("GETUTCDATE()");
+
         builder.HasOne(tc => tc.TeacherProfile)
             .WithMany(t => t.TeacherClassRooms)
             .HasForeignKey(tc => tc.TeacherProfileId)
