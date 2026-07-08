@@ -1,5 +1,6 @@
 using FluentValidation;
 using KiddooPlaySchool.Application.DTOs.ClassRoom;
+using KiddooPlaySchool.Domain.Enums;
 
 namespace KiddooPlaySchool.Application.Validators;
 
@@ -14,5 +15,8 @@ public class CreateClassRoomValidator : AbstractValidator<CreateClassRoomRequest
         RuleFor(x => x.Capacity)
             .GreaterThan(0).WithMessage("Capacity must be greater than 0.")
             .LessThanOrEqualTo(100).WithMessage("Capacity must not exceed 100.");
+
+        RuleFor(x => x.AgeGroup)
+            .IsInEnum().WithMessage("Invalid age group specified.");
     }
 }

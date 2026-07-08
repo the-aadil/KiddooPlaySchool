@@ -1,4 +1,5 @@
 using AutoMapper;
+using KiddooPlaySchool.Application.DTOs.Attendance;
 using KiddooPlaySchool.Application.DTOs.ClassRoom;
 using KiddooPlaySchool.Application.DTOs.Student;
 using KiddooPlaySchool.Application.DTOs.Teacher;
@@ -33,6 +34,18 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt));
 
         CreateMap<ClassRoom, ClassRoomResponse>()
+            .ForMember(dest => dest.AgeGroup, opt => opt.MapFrom(src => src.AgeGroup.ToString()))
             .ForMember(dest => dest.StudentCount, opt => opt.MapFrom(src => src.Students.Count(s => !s.IsDeleted)));
+
+        CreateMap<AttendanceRecord, AttendanceRecordResponse>()
+            .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src =>
+                src.Student.User.FirstName + " " + src.Student.User.LastName));
+
+        CreateMap<DailyActivityLog, DailyLogResponse>()
+            .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src =>
+                src.Student.User.FirstName + " " + src.Student.User.LastName))
+            .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(src =>
+                src.Teacher.User.FirstName + " " + src.Teacher.User.LastName))
+            .ForMember(dest => dest.ActivityTypeName, opt => opt.MapFrom(src => src.ActivityType.ToString()));
     }
 }

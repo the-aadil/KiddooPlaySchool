@@ -18,6 +18,8 @@ public class AppDbContext : DbContext, IUnitOfWork
     public DbSet<StudentProfile> StudentProfiles => Set<StudentProfile>();
     public DbSet<ClassRoom> ClassRooms => Set<ClassRoom>();
     public DbSet<TeacherClassRoom> TeacherClassRooms => Set<TeacherClassRoom>();
+    public DbSet<AttendanceRecord> AttendanceRecords => Set<AttendanceRecord>();
+    public DbSet<DailyActivityLog> DailyActivityLogs => Set<DailyActivityLog>();
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

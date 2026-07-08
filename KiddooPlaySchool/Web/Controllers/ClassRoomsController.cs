@@ -56,4 +56,28 @@ public class ClassRoomsController : ControllerBase
         await _classRoomService.DeleteAsync(id);
         return Ok(ApiResponse.Ok("Class room deleted successfully."));
     }
+
+    [HttpPost("assign-teacher")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AssignTeacher([FromBody] AssignTeacherRequest request)
+    {
+        await _classRoomService.AssignTeacherAsync(request);
+        return Ok(ApiResponse.Ok("Teacher assigned to classroom successfully."));
+    }
+
+    [HttpDelete("assign-teacher/{teacherProfileId:guid}/{classRoomId:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveTeacherAssignment(Guid teacherProfileId, Guid classRoomId)
+    {
+        await _classRoomService.RemoveTeacherAssignmentAsync(teacherProfileId, classRoomId);
+        return Ok(ApiResponse.Ok("Teacher removed from classroom successfully."));
+    }
+
+    [HttpGet("teacher/{teacherProfileId:guid}")]
+    [Authorize(Roles = "Admin,Teacher")]
+    public async Task<IActionResult> GetTeacherClassRooms(Guid teacherProfileId)
+    {
+        var result = await _classRoomService.GetTeacherClassRoomsAsync(teacherProfileId);
+        return Ok(ApiResponse<IEnumerable<ClassRoomResponse>>.Ok(result));
+    }
 }

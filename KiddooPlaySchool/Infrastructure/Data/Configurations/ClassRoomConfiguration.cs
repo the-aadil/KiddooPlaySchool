@@ -19,6 +19,14 @@ public class ClassRoomConfiguration : IEntityTypeConfiguration<ClassRoom>
         builder.Property(c => c.Description)
             .HasMaxLength(500);
 
+        builder.Property(c => c.AgeGroup)
+            .HasConversion<int>()
+            .IsRequired();
+
+        builder.Property(c => c.IsActive)
+            .IsRequired()
+            .HasDefaultValue(true);
+
         builder.Property(c => c.RowVersion)
             .IsRowVersion()
             .IsConcurrencyToken();

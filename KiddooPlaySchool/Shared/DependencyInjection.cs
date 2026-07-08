@@ -38,6 +38,8 @@ public static class DependencyInjection
         services.AddScoped<ITeacherService, TeacherService>();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IClassRoomService, ClassRoomService>();
+        services.AddScoped<IAttendanceService, AttendanceService>();
+        services.AddScoped<IDailyLogService, DailyLogService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
